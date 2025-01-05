@@ -1,0 +1,172 @@
+{% extends "layout.html" %}
+{% block content %}
+    <!-- Start Landing -->
+    <div class="landing">
+        <div class="container">
+            <div class="text">
+                <!-- Main heading and tagline -->
+                <h1>Welcome, To Ceila World</h1>
+                <p>Discover the latest
+                    trends and find everything you need to elevate your style.</p>
+            </div>
+            <div class="image">
+                <img src="imgs/landing-image.png" alt="" />
+            </div>
+        </div>
+    </div>
+    <!-- End Landing -->
+    
+    <!-- Start whats new section -->
+    <div class="whats-new" id="whats-new">
+        <h2 class="main-title">What's New</h2>
+        <div class="container">
+            <!-- Display products in grid layout -->
+            <div class="box">
+                <img src="/static/images/Blazer.png" alt="" />
+                <div class="content">
+                <h3>White Blazer</h3>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit</p>
+                </div>
+                <div class="info">
+                <a href="{{ url_for('products') }}">Show More</a>
+                <i class="fas fa-long-arrow-alt-right"></i>
+                </div>
+            </div>
+            <div class="box">
+                <img src="/static/images/photo10.png" alt="" />
+                <div class="content">
+                <h3>Black Blazer</h3>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit</p>
+                </div>
+                <div class="info">
+                <a href="{{ url_for('products') }}">Show More</a>
+                <i class="fas fa-long-arrow-alt-right"></i>
+                </div>
+            </div>
+            <div class="box">
+                <img src="/static/images/photo9.png" alt="" />
+                <div class="content">
+                <h3>Green Jacket</h3>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit</p>
+                </div>
+                <div class="info">
+                <a href="{{ url_for('products') }}">Show More</a>
+                <i class="fas fa-long-arrow-alt-right"></i>
+                </div>
+            </div>
+            <div class="box">
+                <img src="/static/images/photo7.png" alt="" />
+                <div class="content">
+                <h3>Black-White Shirt</h3>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit</p>
+                </div>
+                <div class="info">
+                    <a href="{{ url_for('products') }}">Show More</a>
+                <i class="fas fa-long-arrow-alt-right"></i>
+                </div>
+            </div>
+            <div class="box">
+                <img src="/static/images/photo15.png" alt="" />
+                <div class="content">
+                <h3>Test Title</h3>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit</p>
+                </div>
+                <div class="info">
+                    <a href="{{ url_for('products') }}">Show More</a>
+                <i class="fas fa-long-arrow-alt-right"></i>
+                </div>
+            </div>
+            <div class="box">
+                <img src="/static/images/photo17.png" alt="" />
+                <div class="content">
+                <h3>Test Title</h3>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit</p>
+                </div>
+                <div class="info">
+                    <a href="{{ url_for('products') }}">Show More</a>
+                <i class="fas fa-long-arrow-alt-right"></i>
+                </div>
+            </div>
+            <div class="box">
+                <img src="/static/images/white-blouse.jpg" alt="" />
+                <div class="content">
+                <h3>Test Title</h3>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit</p>
+                </div>
+                <div class="info">
+                    <a href="{{ url_for('products') }}">Show More</a>
+                <i class="fas fa-long-arrow-alt-right"></i>
+                </div>
+            </div>
+            <div class="box">
+                <img src="/static/images/Blouse_p1.png" alt="" />
+                <div class="content">
+                <h3>Test Title</h3>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit</p>
+                </div>
+                <div class="info">
+                    <a href="{{ url_for('products') }}">Show More</a>
+                <i class="fas fa-long-arrow-alt-right"></i>
+                </div>
+            </div>
+            </div>
+        </div>
+    <!-- End whats new section  -->
+
+    <!-- Start Video Section -->
+        <!-- Video Section -->
+        <div class="video-section">
+            <h2 class="title">Meet Our Team & Learn About TrendyMart</h2>
+            <div class="video-container">
+                <!-- Embedded video showcasing the team and features -->
+                <iframe width="560" height="315" src="static/video.mp4" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="video-description">
+                <p>Watch our video to learn more about TrendyMart's mission, meet our team, and discover our key features.
+                </p>
+            </div>
+        </div>
+    <!-- End Video Section -->
+
+
+
+    <!-- Start Gallery -->
+    <div class="gallery" id="gallery">
+        <h2 class="main-title">New Arrival</h2>
+        <div class="container">
+            <!-- Display gallery images in grid layout -->
+            <div class="box">
+                <div class="image">
+                <img src="/static/images/1.jpg" alt="" />
+                </div>
+            </div>
+            <div class="box">
+                <div class="image">
+                <img src="/static/images/2.jpg" alt="" />
+                </div>
+            </div>
+            <div class="box">
+                <div class="image">
+                <img src="/static/images/3.jpg" alt="" />
+                </div>
+            </div>
+            <div class="box">
+                <div class="image">
+                <img src="/static/images/4.jpg" alt="" />
+                </div>
+            </div>
+            <div class="box">
+                <div class="image">
+                <img src="/static/images/5.jpg" alt="" />
+                </div>
+            </div>
+            <div class="box">
+                <div class="image">
+                <img src="/static/images/6.jpg" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Gallery -->
+
+{% endblock content %}
