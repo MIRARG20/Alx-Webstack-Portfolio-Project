@@ -35,3 +35,33 @@ class Product(db.Model):
     product_picture = db.Column(db.String(1000), nullable=False)
     stock = db.Column(db.Integer(), nullable=False)
     date_added = db.Column(db.DateTime, default=db.func.now())
+
+
+
+
+class Cart(db.Model):
+    # Represents a shopping cart for customers.
+    id = db.Column(db.Integer(), primary_key=True)
+    quantity = db.Column(db.Integer(), nullable=False)
+    customer_link = db.Column(db.Integer(), db.ForeignKey('customer.id'), nullable=False)
+    product_link = db.Column(db.Integer(), db.ForeignKey('product.id'), nullable=False)
+
+    def __str__(self):
+        return f"<Cart(id={self.id}, product_id={self.product_link}, quantity={self.quantity}, customer_id={self.customer_link})>"
+    
+
+
+
+class Order(db.Model):
+    # Represents an order placed by a customer.
+    id = db.Column(db.Integer(), primary_key=True)
+    quantity = db.Column(db.Integer(), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    status = db.Column(db.String(100), nullable=False)
+    payment_id = db.Column(db.String(1000), nullable=False)
+    customer_link = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
+    product_link = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+
+
+    def __str__(self):
+        return f"<Order(id={self.id}, status='{self.status}', price={self.price})>"
