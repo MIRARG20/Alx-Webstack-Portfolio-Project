@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 
+        Title: Sets the page title dynamically based on whether 
+        a specific title is provided or not.
+    -->
+    {% if title %}
+    <title>Ceila - {{title}}</title>
+    {% else %}
+    <title>Ceila</title>
+    {% endif %}
+
+
+    <!-- css style -->
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="static/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <!-- Flash messages container for displaying success/error messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-messages">
+        {% for category, message in messages %}
+            <div class="{{ category }} flash-message">
+            {{ message }}
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+
+
+
+        <!-- Start Header -->
+        <div class="header" id="header">
+            <div class="container">
+                <a href="home" class="logo">Ceila</a>
+                
+                <!-- Start navigation -->
+                <ul class="main-nav">
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                    <li><a href="{{ url_for('products') }}">Products</a></li>
+
+                    <!-- Conditional rendering for logged-in users -->
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.id == 1 %}
+                            <li>
+                                <a href="#">Admin</a>
+                                <div class="mega-menu">
+                                    <ul class="links">
+                                        <li><a href="{{ url_for('show_orders') }}">Admin Orders</a></li>
+                                        <li><a href="{{ url_for('add_shop_items') }}">Add Items</a></li>
+                                        <li><a href="{{ url_for('shop_items') }}">Shop Items</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        {% endif %}
+                        <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('register') }}">Register</a></li>
+                        <li><a href="{{ url_for('login') }}">Login</a></li>
+                    {% endif %}
+                    <!-- Cart icon and cart count -->
+                    <li>
+                        {% if cart and cart|length > 0 %}
+                            <a href="{{ url_for('view_cart') }}" class="navbar-link position-relative">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="badge">{{ cart|length }}</span>
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('view_cart') }}">
+                                <i class="fas fa-shopping-cart"></i>
+                            </a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- End Header -->
+
+
+    <!-- Content block -->
+    {% block content %} {% endblock %}
+    
+    <!-- footer -->
+    <!-- Start Footer Section -->
+    <div class="footer">
+        <div class="container">
+            <div class="box">
+                <h3>Ceila</h3>
+                <ul class="social">
+                <li>
+                    <a href="#" class="facebook">
+                    <i class="fab fa-facebook-f"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="twitter">
+                    <i class="fab fa-twitter"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="youtube">
+                    <i class="fab fa-youtube"></i>
+                    </a>
+                </li>
+                </ul>
+                <p class="text">
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus nulla rem, dignissimos iste aspernatur
+                </p>
+            </div>
+
+            <!-- Information links -->
+            <div class="box">
+                <ul class="links">
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Returns and Changes</a></li>
+                <li><a href="#">Shipping & Delivery</a></li>
+                <li><a href="#">Order Tracking</a></li>
+                <li><a href="#">Branches</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact information -->
+            <div class="box">
+                <div class="line">
+                <i class="fas fa-map-marker-alt fa-fw"></i>
+                <div class="info">Address, Lorem ipsum dolor sit amet </div>
+                </div>
+                <div class="line">
+                <i class="far fa-clock fa-fw"></i>
+                <div class="info">Business Hours: From 10:00 To 18:00</div>
+                </div>
+                <div class="line">
+                <i class="fas fa-phone-volume fa-fw"></i>
+                <div class="info">
+                    <span>+20123456789</span>
+                    <span>+20198765432</span>
+                </div>
+                </div>
+            </div>
+            <div class="box footer-gallery">
+                <img src="static/images/gallery-01.png" alt="" />
+                <img src="static/images/gallery-01.png" alt="" />
+                <img src="static/images/gallery-01.png" alt="" />
+                <img src="static/images/gallery-01.png" alt="" />
+                <img src="static/images/gallery-01.png" alt="" />
+                <img src="static/images/gallery-01.png" alt="" />
+
+            </div>
+        </div>
+        <p class="copyright">Copyright 2024</p>
+    </div>
+        <!-- End Footer -->
+</body>
+</html>
