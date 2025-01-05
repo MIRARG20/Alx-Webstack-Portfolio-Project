@@ -24,3 +24,14 @@ class Customer(db.Model, UserMixin):
     
     def __repr__(self):
         return f"Customer('{self.username}', '{self.email}')"
+    
+
+class Product(db.Model):
+    # Represents a product available in the store.
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(length=100), nullable=False, unique=True)
+    price = db.Column(db.Integer(), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    product_picture = db.Column(db.String(1000), nullable=False)
+    stock = db.Column(db.Integer(), nullable=False)
+    date_added = db.Column(db.DateTime, default=db.func.now())
