@@ -35,6 +35,11 @@ class Product(db.Model):
     product_picture = db.Column(db.String(1000), nullable=False)
     stock = db.Column(db.Integer(), nullable=False)
     date_added = db.Column(db.DateTime, default=db.func.now())
+    carts = db.relationship('Cart', backref=db.backref('product', lazy=True))
+    orders = db.relationship('Order', backref=db.backref('product', lazy=True))
+
+    def __str__(self):
+        return f"<Product(name='{self.name}', price={self.price}, stock={self.stock}, added_on={self.date_added.strftime('%Y-%m-%d')})>"
 
 
 
