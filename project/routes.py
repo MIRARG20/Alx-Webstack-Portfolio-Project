@@ -1,5 +1,9 @@
-from flask import render_template, send_from_directory
-from project import app
+from project.models import Customer
+from flask import render_template, url_for, flash, redirect, send_from_directory
+from project.forms import RegistrationForm
+from project import app, bcrypt, db
+from flask_login import current_user
+
 
 
 
@@ -20,3 +24,21 @@ def about():
 @app.route('/media/<path:filename>')
 def get_image(filename):
     return send_from_directory('../media', filename)
+
+
+
+# User registration route.
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    # validation on submit method
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        customer = Customer(username=form.username.data, email=form.email.data, password=hashed_password)
+        db.session.add(customer)
+        db.session.commit()
+        flash(f'Account created successfully for {form.username.data}', 'success')
+        return redirect(url_for('login'))
+    return render_template('register.html', title="Register", form=form)
