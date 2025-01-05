@@ -37,3 +37,8 @@ class ShopItemsForm(FlaskForm):
     stock = IntegerField('Stock', validators=[DataRequired(), NumberRange(min=0)])
     add_product = SubmitField('Add Product')
     update_product = SubmitField('Update')
+
+
+# Form for placing an order.
+class CartForm(FlaskForm):
+    submit = SubmitField('Place Order')
