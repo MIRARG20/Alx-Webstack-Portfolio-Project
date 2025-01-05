@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, FloatField, IntegerField, TextAreaField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange
 from project.models import Customer
+from flask_wtf.file import FileField, FileRequired
 
 
 # Form for user registration.
@@ -25,3 +26,14 @@ class LoginForm(FlaskForm):
     password = PasswordField(label='Password', validators=[Length(min=6), DataRequired()])
     remember = BooleanField(label='Remember Me')
     submit = SubmitField(label='Sign in')
+
+
+# Form for adding new products to the store.
+class ShopItemsForm(FlaskForm):
+    product_name = StringField('Name of Product', validators=[DataRequired()])
+    price = FloatField('Price', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    product_picture = FileField('Product Picture', validators=[FileRequired()])
+    stock = IntegerField('Stock', validators=[DataRequired(), NumberRange(min=0)])
+    add_product = SubmitField('Add Product')
+    update_product = SubmitField('Update')
