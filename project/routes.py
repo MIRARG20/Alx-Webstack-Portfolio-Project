@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, send_from_directory
 from project import app
 
 
@@ -14,3 +14,9 @@ def home():
 @app.route("/about")
 def about():
     return render_template('about.html', title="About")
+
+
+# Serve images from the media folder.
+@app.route('/media/<path:filename>')
+def get_image(filename):
+    return send_from_directory('../media', filename)
