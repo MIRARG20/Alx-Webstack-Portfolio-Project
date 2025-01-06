@@ -1,6 +1,6 @@
 from project.models import Customer, Product, Cart
 from flask import render_template, url_for, flash, redirect, request, send_from_directory
-from project.forms import RegistrationForm, LoginForm
+from project.forms import RegistrationForm, LoginForm, CartForm
 from project import app, bcrypt, db
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -113,3 +113,17 @@ def add_to_cart(item_id):
         return redirect(request.referrer)
     flash('Item out of stock or does not exist', 'error')
     return redirect(url_for('products'))
+
+
+
+# View cart route.
+# Displays the user's shopping cart and allows them to place an order
+@app.route('/cart')
+@login_required
+def view_cart():
+    cart = Cart.query.filter_by(customer_link=current_user.id).all()
+    final_cost = sum(item.product.price * item.quantity for item in cart)
+    cart_form = CartForm()
+    if cart_form.validate_on_submit():
+        return redirect(url_for('place_order'))
+    return render_template('cart.html', cart=cart, final_cost=final_cost, form=cart_form)
