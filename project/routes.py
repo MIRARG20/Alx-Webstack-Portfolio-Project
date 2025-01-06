@@ -208,3 +208,14 @@ def add_shop_items():
         finally:
             db.session.close()
     return render_template('add-shop-items.html', form=form)
+
+
+# Shop items route.
+# Retrieves and displays products for administrators.
+@app.route('/shop-items', methods=['GET', 'POST'])
+@login_required
+def shop_items():
+    if current_user.id == 1:
+        items = Product.query.order_by(Product.date_added).all()
+        return render_template('shop_items.html', items=items)
+    return render_template('404.html')
