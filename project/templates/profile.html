@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Start user profile -->
+
+<!-- Container for the entire profile section -->
+<div class="profile-container">
+    <h1>{{ current_user.username }}'s Profile</h1>
+
+<!-- User information section -->
+    <div class="profile-info">
+        <div class="user-info">
+            <h2>User Information</h2>
+            <ul>
+                <li>Email: {{ current_user.email }}</li>
+                <li>Address: {{ current_user.address }}</li>
+                <li>Customer ID: {{ current_user.id }}</li>
+            </ul>
+        </div>
+
+        <!-- Order history section -->
+        <div class="order-history">
+            <h2>Orders</h2>
+            {% if orders %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Payment ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <td>{{ order.id }}</td>
+                                <td>{{ order.product.name }}</td>
+                                <td>{{ order.quantity }}</td>
+                                <td>${{ order.price }}</td>
+                                <td>
+                                    <span class="status {{ order.status }}">{{ order.status }}</span>
+                                </td>
+                                <td>{{ order.payment_id }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="no-orders">No orders yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- End user profile -->
+{% endblock %}
