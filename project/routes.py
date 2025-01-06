@@ -127,3 +127,27 @@ def view_cart():
     if cart_form.validate_on_submit():
         return redirect(url_for('place_order'))
     return render_template('cart.html', cart=cart, final_cost=final_cost, form=cart_form)
+
+
+# Update cart quantity route.
+# Allows users to change the quantity of items in their cart.
+@app.route('/update-cart/<int:product_id>', methods=['POST'])
+def update_cart_quantity(product_id):
+    if current_user.is_authenticated:
+        cart_item = Cart.query.filter_by(customer_link=current_user.id, product_link=product_id).first()
+        if cart_item:
+            cart_item.quantity = request.form['quantity']
+            db.session.commit()
+    return redirect(url_for('view_cart'))
+
+
+# Remove from cart route.
+# Removes an item from the user's shopping cart.
+@app.route('/remove-from-cart/<int:product_id>')
+def remove_from_cart(product_id):
+    if current_user.is_authenticated:
+        cart_item = Cart.query.filter_by(customer_link=current_user.id, product_link=product_id).first()
+        if cart_item:
+            db.session.delete(cart_item)
+            db.session.commit()
+    return redirect(url_for('view_cart'))
