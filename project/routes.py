@@ -1,9 +1,8 @@
-from project.models import Customer, Product, Cart, Order
-from flask import render_template, url_for, flash, redirect, send_from_directory
+from project.models import Customer, Product, Cart
+from flask import render_template, url_for, flash, redirect, request, send_from_directory
 from project.forms import RegistrationForm, LoginForm
 from project import app, bcrypt, db
-from flask_login import login_user, current_user, logout_user
-
+from flask_login import login_user, current_user, logout_user, login_required
 
 
 
@@ -78,3 +77,39 @@ def products():
     else:
         cart = []
     return render_template('products.html', title="Products", items=items, cart=cart)
+
+
+# Add to cart route.
+@app.route('/add-to-cart/<int:item_id>')
+@login_required
+def add_to_cart(item_id):
+    item_to_add = Product.query.get(item_id)
+    if item_to_add and item_to_add.stock > 0:
+        item_exists = Cart.query.filter_by(product_link=item_id, customer_link=current_user.id).first()
+        if item_exists:
+            try:
+                item_exists.quantity += 1
+                item_to_add.stock -= 1
+                db.session.commit()
+                flash(f'Quantity of {item_exists.product.name} has been updated', 'success')
+            except Exception as e:
+                db.session.rollback()
+                flash(f'Quantity of {item_exists.product.name} not updated', 'error')
+        else:
+            new_cart_item = Cart(
+                product_link=item_id,
+                customer_link=current_user.id,
+                quantity=1
+            )
+            item_to_add.stock -= 1
+            try:
+                db.session.add(new_cart_item)
+                db.session.commit()
+                
+                flash(f'{new_cart_item.product.name} added to cart', 'success')
+            except Exception as e:
+                db.session.rollback()
+                flash(f'{new_cart_item.product.name} has not been added to cart', 'error')
+        return redirect(request.referrer)
+    flash('Item out of stock or does not exist', 'error')
+    return redirect(url_for('products'))
