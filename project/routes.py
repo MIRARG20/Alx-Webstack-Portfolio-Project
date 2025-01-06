@@ -1,10 +1,8 @@
-from project.models import Customer
+from project.models import Customer, Product, Cart, Order
 from flask import render_template, url_for, flash, redirect, send_from_directory
-from project.forms import RegistrationForm, LoginForm, ShopItemsForm, CartForm
+from project.forms import RegistrationForm, LoginForm
 from project import app, bcrypt, db
 from flask_login import login_user, current_user, logout_user
-
-
 
 
 
@@ -69,3 +67,14 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for("home"))
+
+
+#Products page route.
+@app.route("/products")
+def products():
+    items = Product.query.all()
+    if current_user.is_authenticated:
+        cart = Cart.query.filter_by(customer_link=current_user.id).all()
+    else:
+        cart = []
+    return render_template('products.html', title="Products", items=items, cart=cart)
