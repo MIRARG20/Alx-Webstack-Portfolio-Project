@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Container for the entire cart section -->
+<div class="cart-container">
+    <h1>Your Shopping Cart</h1>
+    <hr>
+
+    {% if cart %}
+        <!-- Table to display cart items -->
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set total_cost = 0 %}
+                {% for item in cart %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>${{ item.product.price }}</td>
+                        <td>
+                            <!-- Form to update quantity -->
+                            <form action="{{ url_for('update_cart_quantity', product_id=item.product.id) }}" method="POST">
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}">
+                                <button type="submit">Update</button>
+                            </form>
+                        </td>
+                        <td>${{ item.product.price * item.quantity }}</td>
+                        <td>
+                            <!-- Link to remove item from cart -->
+                            <a href="{{ url_for('remove_from_cart', product_id=item.product.id) }}">Remove</a>
+                        </td>
+                    </tr>
+                    {% set total_cost = total_cost + (item.product.price * item.quantity) %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Display total cost and place order button -->
+        <div class="total-row">
+            <table>
+                <tr>
+                    <td colspan="3"></td>
+                    <td><strong>Total:</strong> ${{ final_cost }}</td>
+                    <td>
+                        <!-- Form to place order -->
+                        <form action="{{ url_for('place_order') }}" method="POST">
+                            {{ form.hidden_tag() }}
+                            <input type="submit" value="Place Order" class="place-order-btn">
+
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Link to continue shopping -->
+        <div class="continue-shopping">
+            <a href="{{ url_for('products') }}">Continue Shopping</a>
+        </div>
+    {% else %}
+        <!-- Display message if cart is empty -->
+        <div class="empty-cart">
+            <p>Your cart is empty.</p>
+            <a href="{{ url_for('products') }}">Go Shopping</a>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}
