@@ -263,3 +263,15 @@ def place_order():
     db.session.commit()
     flash('Order placed successfully!', 'success')
     return redirect(url_for('show_orders'))
+
+
+# Show orders route.
+# Displays all orders for the Admins.
+@app.route('/orders')
+@login_required
+def show_orders():
+    if current_user.id == 1:
+        orders = Order.query.order_by(Order.id.desc()).all()
+    else:
+        orders = Order.query.filter_by(customer_link=current_user.id).order_by(Order.id.desc()).all()
+    return render_template('show_orders.html', orders=orders)
