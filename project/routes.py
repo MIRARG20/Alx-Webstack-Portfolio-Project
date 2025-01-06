@@ -238,3 +238,28 @@ def delete_item(item_id):
             flash('Item not deleted!!')
         return redirect('/shop-items')
     return render_template('404.html')
+
+
+# Place order route.
+@app.route('/place-order', methods=['POST'])
+@login_required
+def place_order():
+    # Get all unpurchased items from the cart
+    cart_items = Cart.query.filter_by(customer_link=current_user.id).all()
+    if not cart_items:
+        flash('No items in cart to purchase', 'error')
+        return redirect(url_for('view_cart'))
+    # Create a new order for each item in the cart
+    for item in cart_items:
+        new_order = Order(
+            quantity=item.quantity,
+            price=item.product.price,
+            status="pending",
+            payment_id="pending",
+            customer_link=current_user.id,
+            product_link=item.product.id
+        )
+        db.session.add(new_order)
+    db.session.commit()
+    flash('Order placed successfully!', 'success')
+    return redirect(url_for('show_orders'))
