@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% block content %}
+    <!-- Start Login page-->
+<div class="login" id="login">
+    <!-- Background image container -->
+    <div class="image">
+        <div class="content">
+            <h2>Login to Your Account</h2>
+            <p>
+                Welcome back! Please enter your credentials to access your account.
+            </p>
+        </div>
+    </div>
+    <!-- Login form container -->
+    <div class="form">
+        <div class="content">
+            <h2>Login</h2>
+            <!-- Flask-WTF form -->
+            <form method="POST" action="">
+            {{ form.hidden_tag() }}
+                <!-- Email input field -->
+                <div>
+                    {% if form.email.errors %}
+                    {{ form.email(class="input is-invalid", placeholder="Email") }}
+                        <div class="error-message">
+                            {% for error in form.email.errors %}
+                            <span class="{{error}}">{{error}}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                    {{ form.email(class="input", placeholder="Email") }}
+                    {% endif %}
+                </div>
+                <!-- Password input field -->
+                <div>
+                    {% if form.password.errors %}
+                    {{ form.password(class="input is-invalid", placeholder="Password") }}
+                    <div class="error-message">
+                        {% for error in form.password.errors %}
+                        <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.password(class="input", placeholder="Password") }}
+                    {% endif %}
+                </div>
+                <!-- Remember me checkbox -->
+                <div>
+                {{ form.remember() }}
+                {{ form.remember.label() }}
+                </div>
+                <!-- Submit button -->
+                <div>
+                {{ form.submit}}
+                </div>
+            </form>
+            <!-- Forgot password link -->
+            <small>
+                <a href="#">Forget Password</a>
+            </small>
+            <br>
+            <!-- Sign-up link -->
+            <small>
+                Create An Account?
+                <a href="{{url_for('register')}}">Sign Up</a>
+            </small>
+            
+        </div>
+    </div>
+</div>
+    <!-- End Login page-->
+
+{% endblock content %}
