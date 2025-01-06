@@ -1,4 +1,4 @@
-from project.models import Customer, Product, Cart
+from project.models import Customer, Product, Cart, Order
 from flask import render_template, url_for, flash, redirect, request, send_from_directory
 from project.forms import RegistrationForm, LoginForm, CartForm
 from project import app, bcrypt, db
@@ -151,3 +151,12 @@ def remove_from_cart(product_id):
             db.session.delete(cart_item)
             db.session.commit()
     return redirect(url_for('view_cart'))
+
+
+
+# User profile route.
+@app.route("/profile")
+@login_required
+def profile():
+    orders = Order.query.filter_by(customer_link=current_user.id).order_by(Order.id.desc()).all()
+    return render_template("profile.html", title="Profile", orders=orders)
