@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Start Products Page -->
+<div class="small-container">
+    <!-- Row for sorting options -->
+    <div class="row sort">
+        <h2>All Products</h2>
+        <!-- <select>
+            <option>Default Sorting</option>
+            <option>Sort by price</option>
+            <option>Sort by newest</option>
+            <option>Sort by oldest</option>
+        </select> -->
+    </div>
+    <!-- Row for displaying products -->
+    <div class="row">
+        {% for item in items %}
+        <!-- Individual product item -->
+        <div class="item">
+            <a href="">
+                <img src="{{ item.product_picture }}" alt="{{ item.name }}" class="">
+            </a>
+            <h4><a href="">{{ item.name }}</h4></a>
+            <p>${{ item.price }}</p>
+            <p>{{ item.description }}</p>
+            <p>{{ item.stock }} Items Left</p>
+
+            <!-- Add to cart button -->
+            <div class="col">
+                <a href="/add-to-cart/{{ item.id }}" class="add">Add</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination buttons -->
+    <div class="page-btn">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>&#8594;</span>
+    </div>
+</div>
+
+<!-- End Products Page -->
+{% endblock content %}
+
+
