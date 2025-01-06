@@ -2,7 +2,7 @@ from project.models import Customer
 from flask import render_template, url_for, flash, redirect, send_from_directory
 from project.forms import RegistrationForm, LoginForm, ShopItemsForm, CartForm
 from project import app, bcrypt, db
-from flask_login import login_user, current_user
+from flask_login import login_user, current_user, logout_user
 
 
 
@@ -62,3 +62,10 @@ def login():
         else:
             flash('Login Unsuccessful, please check your username and password', 'error')
     return render_template('login.html', title="Login", form=form)
+
+
+# Logout user route.
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("home"))
