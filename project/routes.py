@@ -1,10 +1,10 @@
 from project.models import Customer, Product, Cart, Order
-from flask import render_template, url_for, flash, redirect, request, send_from_directory
-from project.forms import RegistrationForm, LoginForm, CartForm
+from flask import render_template, url_for, flash, redirect, request, send_from_directory, abort
+from project.forms import RegistrationForm, LoginForm, ShopItemsForm, CartForm
 from project import app, bcrypt, db
 from flask_login import login_user, current_user, logout_user, login_required
-
-
+from werkzeug.utils import secure_filename
+from sqlalchemy.exc import SQLAlchemyError
 
 
 # Home page route.
@@ -160,3 +160,51 @@ def remove_from_cart(product_id):
 def profile():
     orders = Order.query.filter_by(customer_link=current_user.id).order_by(Order.id.desc()).all()
     return render_template("profile.html", title="Profile", orders=orders)
+
+
+
+# Admin routes
+
+# Add shop items route.
+# Allows administrators to add new products to the store.
+@app.route('/add-shop-items', methods=['GET', 'POST'])
+@login_required
+def add_shop_items():
+    if current_user.id != 1:
+        abort(403)
+    form = ShopItemsForm()
+    if form.validate_on_submit():
+        product_name = form.product_name.data
+        price = form.price.data
+        stock = form.stock.data
+        # Check if the file is uploaded
+        if not form.product_picture.data:
+            flash('Please select a product picture.', 'error')
+            return render_template('add-shop-items.html', form=form)
+        # Get the filename
+        file_name = secure_filename(form.product_picture.data.filename)
+        # Set the file path
+        # file_path = os.path.join(current_app.root_path, 'media', file_name)
+        file_path = f'./media/{file_name}'
+        try:
+            # Save the file
+            form.product_picture.data.save(file_path)
+            new_shop_item = Product(
+                    name=product_name,
+                    price=price,
+                    description=form.description.data,  # Add this line
+                    product_picture=file_path,
+                    stock=stock
+                )
+            db.session.add(new_shop_item)
+            db.session.commit()
+            flash(f'{product_name} added Successfully', 'success')
+            print('Product Added')
+            return render_template('add-shop-items.html', form=form)
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            flash(f'An error occurred while adding the product: {str(e)}', 'error')
+            print(f"SQLAlchemy Error: {e}")
+        finally:
+            db.session.close()
+    return render_template('add-shop-items.html', form=form)
