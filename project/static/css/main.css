@@ -536,7 +536,6 @@ display: block;
 }
 .footer .footer-gallery img {
 width: 78px;
-/* border: 3px solid white; */
 margin: 2px;
 }
 .footer .copyright {
@@ -550,8 +549,6 @@ border-top: 1px solid #444;
     color: var(--third-color);
 }
   /* End Footer */
-
-
 /* Start Animation */
 @keyframes up-and-down {
     0%,
