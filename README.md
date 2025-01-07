@@ -1,8 +1,5 @@
-# Alx Webstack Portfolio Project
-# Ceila online shop application
-
 ![Project Header Image](project/static/images/README.PNG)
-
+## Ceila online shop application
 ## Overview
 
 This project is a comprehensive e-commerce platform built with Flask, SQLAlchemy, and Bootstrap. It allows users to register, login, browse products, add items to cart, view their shopping cart, and place orders. Administrators have additional features like adding/editing/deleting products and managing orders.
