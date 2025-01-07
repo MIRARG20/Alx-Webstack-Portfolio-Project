@@ -275,3 +275,29 @@ def show_orders():
     else:
         orders = Order.query.filter_by(customer_link=current_user.id).order_by(Order.id.desc()).all()
     return render_template('show_orders.html', orders=orders)
+
+
+@app.route('/update_order_status/<int:order_id>/<string:new_status>', methods=['POST'])
+@login_required
+def update_order_status(order_id, new_status):
+    if current_user.id != 1:
+        flash("Only administrators can update order status.", "warning")
+        return redirect(url_for('show_orders'))
+    order = Order.query.get_or_404(order_id)
+    order.status = new_status
+    db.session.commit()
+    flash(f"Order #{order.id} status updated to {new_status}.", "success")
+    return redirect(url_for('show_orders'))
+
+
+@app.route('/delete_order/<int:order_id>', methods=['POST'])
+@login_required
+def delete_order(order_id):
+    if current_user.id != 1:
+        flash("Only administrators can delete orders.", "warning")
+        return redirect(url_for('show_orders'))
+    order = Order.query.get_or_404(order_id)
+    db.session.delete(order)
+    db.session.commit()
+    flash(f"Order #{order.id} deleted successfully.", "success")
+    return redirect(url_for('show_orders'))
