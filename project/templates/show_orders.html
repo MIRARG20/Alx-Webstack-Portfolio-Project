@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Container for the orders section -->
+<div class="orders-container">
+    <h1>{% if current_user.id == 1 %}All Orders{% else %}My Orders{% endif %}</h1>
+    <!-- Container for the orders table -->
+    <div class="orders-table-container">
+        {% if orders %}
+        <!-- Table to display orders -->
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Payment ID</th>
+                        {% if current_user.id == 1 %}
+                            <th>Actions</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{% if current_user.id == 1 %}{{ order.customer.username }}{% else %}-{% endif %}</td>
+                            <td>{{ order.product.name }}</td>
+                            <td>{{ order.quantity }}</td>
+                            <td>${{ order.price }}</td>
+                            <td>
+                                <span class="status {{ order.status }}">{{ order.status }}</span>
+                            </td>
+                            <td>{{ order.payment_id }}</td>
+                            {% if current_user.id == 1 %}
+                                <td>
+                                    <!-- <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="orderStatusDropdown_{{ order.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Update Status
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="orderStatusDropdown_{{ order.id }}">
+                                            <li><a class="dropdown-item" href="#" data-order-id="{{ order.id }}" data-status="pending">Pending</a></li>
+                                            <li><a class="dropdown-item" href="#" data-order-id="{{ order.id }}" data-status="shipped">Shipped</a></li>
+                                            <li><a class="dropdown-item" href="#" data-order-id="{{ order.id }}" data-status="delivered">Delivered</a></li>
+                                            <li><a class="dropdown-item" href="#" data-order-id="{{ order.id }}" data-status="cancelled">Cancelled</a></li>
+                                        </ul>
+                                    </div> -->
+                                    <!-- Form to delete order -->
+                                    <form action="{{ url_for('delete_order', order_id=order.id) }}" method="post" onclick="return confirm('Are you sure you want to delete this order?')">
+                                        <button type="submit" class="btn btn-danger delete-button">Delete</button>
+                                    </form>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <!-- Display message if there are no orders -->
+            <p class="no-orders">No orders yet.</p>
+            <a href="{{ url_for('products') }}" class="btn btn-primary go-shopping-btn">Go Shopping</a>
+        {% endif %}
+    </div>
+    <!-- Link to go back to products page -->
+    <div class="back-to-products">
+        <a href="{{ url_for('products') }}" class="btn btn-secondary">Back to Products</a>
+    </div>
+</div>
+
+{% endblock %}
