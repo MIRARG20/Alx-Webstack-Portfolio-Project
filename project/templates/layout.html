@@ -42,14 +42,12 @@
         <!-- Start Header -->
         <div class="header" id="header">
             <div class="container">
-                <a style="letter-spacing: 5px;" href="home" class="logo">CEILA</a>
-                
+                <a href="home" class="logo">Ceila</a>
                 <!-- Start navigation -->
                 <ul class="main-nav">
                     <li><a href="{{ url_for('home') }}">Home</a></li>
                     <li><a href="{{ url_for('about') }}">About</a></li>
                     <li><a href="{{ url_for('products') }}">Products</a></li>
-
                     <!-- Conditional rendering for logged-in users -->
                     {% if current_user.is_authenticated %}
                         {% if current_user.id == 1 %}
@@ -66,23 +64,23 @@
                         {% endif %}
                         <li><a href="{{ url_for('profile') }}">Profile</a></li>
                         <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                        <!-- Cart icon and cart count -->
+                        <li>
+                            {% if cart and cart|length > 0 %}
+                                <a href="{{ url_for('view_cart') }}" class="navbar-link position-relative">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span class="badge">{{ cart|length }}</span>
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for('view_cart') }}">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </a>
+                            {% endif %}
+                        </li>
                     {% else %}
                         <li><a href="{{ url_for('register') }}">Register</a></li>
                         <li><a href="{{ url_for('login') }}">Login</a></li>
                     {% endif %}
-                    <!-- Cart icon and cart count -->
-                    <li>
-                        {% if cart and cart|length > 0 %}
-                            <a href="{{ url_for('view_cart') }}" class="navbar-link position-relative">
-                                <i class="fas fa-shopping-cart"></i>
-                                <span class="badge">{{ cart|length }}</span>
-                            </a>
-                        {% else %}
-                            <a href="{{ url_for('view_cart') }}">
-                                <i class="fas fa-shopping-cart"></i>
-                            </a>
-                        {% endif %}
-                    </li>
                 </ul>
             </div>
         </div>
@@ -97,7 +95,9 @@
     <div class="footer">
         <div class="container">
             <div class="box">
-                <h3>Ceila</h3>
+                <a href="{{ url_for('home') }}">
+                    <h3>Ceila</h3>
+                </a>
                 <ul class="social">
                 <li>
                     <a href="#" class="facebook">
